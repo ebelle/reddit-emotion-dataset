@@ -24,5 +24,5 @@ To test the classification:
 
 bash 
 python classify.py --filename data/2020.08.08_comments.json \
---unigrams --tfidf --empath-features \
+--char-features --tfidf --empath --vader --sliding-window --bigrams \
 --classifier svc
