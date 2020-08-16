@@ -1,19 +1,18 @@
 # reddit-emotion-dataset
-Creates a emotion dataset using responses to AskReddit questions such as "what makes you happy?" Best results lead to an F1 of 0.70 over a baseline of 0.20. "Disgusted" was the most difficult emotion to classify with an accuracy of 0.42. Additional hand-cleaning of the data and more focused keywords may improve results. Some titles, such as "Does money buy happiness?" can be tricky to catch while scraping.
+Creates a emotion dataset using responses to AskReddit questions such as "what makes you happy?"
 
-To use the scraper, you need a yaml file with your reddit credentials, which can be obtained here: https://docs.google.com/forms/d/e/1FAIpQLSezNdDNK1-P8mspSbmtC2r86Ee9ZRbC66u929cG2GX0T9UMyw/viewform
-
-It can be run as:
+To use the scraper, you need reddit credentials, which can be obtained here: https://docs.google.com/forms/d/e/1FAIpQLSezNdDNK1-P8mspSbmtC2r86Ee9ZRbC66u929cG2GX0T9UMyw/viewform and then they should be put into a yaml file.
+The scraper can be run as:
 
 bash
 python reddit_scraper.py --save-path data/ \
 --reddit-credentials credentials.yaml
 
-If you'd like to hand clean the titles first, use the --titles-only flag. This will return a csv with the titles of all the posts to be scraped. After cleaning, to get the comments, run the scraper again with:
+If you'd like to hand clean the titles being scraped first, use the --titles-only flag. This will return a csv with the titles of all the posts to be scraped. After cleaning, in order to get the comments, run the scraper again with:
 
 bash
 python reddit_scraper.py --save-path data/ \
---get-comments data/2018.08.08_titles.csv \
+--get-comments data/titles.csv \
 --reddit-credentials credentials.yaml
 
 Title search terms can be changed by creating your own --emotion-dict for the scraper. Default dictionary is :<br />
@@ -31,6 +30,6 @@ Title search terms can be changed by creating your own --emotion-dict for the sc
 To test the classification:
 
 bash 
-python classify.py --filename data/2018.08.08_comments.json \
---char-features --tfidf --empath \
+python classify.py --filename data/comments.json \
+--char-features --tfidf --vader \
 --classifier svc
