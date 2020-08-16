@@ -1,5 +1,5 @@
 # reddit-emotion-dataset
-Creates a emotion dataset using responses to AskReddit questions such as "what makes you happy?" Best results lead to an F1 of 0.70 over a baseline of 0.20. "Disgusted" was the most difficult emotion to classify with an accuracy of 0.42. Additional hand-cleaning of the data and more focused keywords may improve results. Some questions, such as "Does money buy happiness?", can be very tricky to catch.
+Creates a emotion dataset using responses to AskReddit questions such as "what makes you happy?" Best results lead to an F1 of 0.70 over a baseline of 0.20. "Disgusted" was the most difficult emotion to classify with an accuracy of 0.42. Additional hand-cleaning of the data and more focused keywords may improve results.
 
 To use the scraper, you need a yaml file with your reddit credentials. It can be run as:
 
