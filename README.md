@@ -8,12 +8,6 @@ bash
 python reddit_scraper.py --save-path data/ \
 --reddit-credentials credentials.yaml
 
-If you'd like to hand clean the titles being scraped first, use the --titles-only flag. This will return a csv with the titles of all the posts to be scraped. After cleaning, in order to get the comments, run the scraper again with:
-
-bash
-python reddit_scraper.py --save-path data/ \
---get-comments data/titles.csv \
---reddit-credentials credentials.yaml
 
 Title search terms can be changed by creating your own --emotion-dict for the scraper. Default dictionary is :<br />
 {"happy":["happy","happier", "happiest", "ecstatic", "pleasure","joy", "joyful", "joyous","happiness"],<br />
