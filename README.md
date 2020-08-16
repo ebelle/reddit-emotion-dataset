@@ -7,7 +7,7 @@ bash
 python reddit_scraper.py --save-path ../data/ \
 --reddit-credentials credentials.yaml
 
-Default search terms in the title are:<br />
+Title search terms can be changed by creating your own --emotion-dict for the scraper. Defaults are :<br />
 "happy":["happy","happier", "happiest", "ecstatic", "pleasure","joy", "joyful", "joyous","happiness"]<br />
 "surprised":["surprised", "more surprised", "most surprised", "shocked", "most shocked","surprise", "biggest surpise", "shock"]<br />
 "sad": ["sad", "sadder", "saddest", "depressed", "more depressed" "most depressed", "sadness", "depression"]<br />
@@ -15,10 +15,10 @@ Default search terms in the title are:<br />
 "afraid":["afraid", "more afraid", "most afraid", "frightened", "fear", "creepy"]<br />
 "disgusted": ["disgusted", "more disgusted", "most disgusted", "grossed out", "most grossed out", "most appalled", "appalled", "disgust"]
 
-Default words not wanted in the title post are:<br />
+ Words not wanted in the title can be changed by creating your own --excluded-words list. Defaults are:<br />
 ["song","songs", "film", "films","movie", "movies", "joke", "jokes","lyrics", "book", "books","irrational,unreasonably"]
 
-Additional hand-cleaning of dataset may be needed as some questions can be tricky to catch, such as "Does money buy happiness?"
+Additional hand-cleaning of dataset may be needed as some questions, such as "Does money buy happiness?", can be tricky to catch.
 
 To test the classification:
 
