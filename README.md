@@ -7,7 +7,7 @@ bash
 python reddit_scraper.py --save-path ../data/ \
 --reddit-credentials credentials.yaml
 
-Default search terms in the title are:
+Default search terms in the title are:<br />
 "happy":["happy","happier", "happiest", "ecstatic", "pleasure","joy", "joyful", "joyous","happiness"]<br />
 "surprised":["surprised", "more surprised", "most surprised", "shocked", "most shocked","surprise", "biggest surpise", "shock"]<br />
 "sad": ["sad", "sadder", "saddest", "depressed", "more depressed" "most depressed", "sadness", "depression"]<br />
@@ -21,3 +21,8 @@ Default words not wanted in the title post are:<br />
 Additional hand-cleaning of dataset may be needed as some questions can be tricky to catch, such as "Does money buy happiness?"
 
 To test the classification:
+
+bash 
+python classify.py --filename data/2020.08.08_comments.json \
+--unigrams --tfidf --empath-features \
+--classifier svc
