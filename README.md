@@ -1,5 +1,5 @@
 # reddit-emotion-dataset
-Creates a emotion dataset using responses to AskReddit questions such as "what makes you happy?"
+Creates a emotion dataset using responses to AskReddit questions such as "what makes you happy?" Best results lead to an F1 of 0.70 over a baseline of 0.20. "Disgusted" was the most difficult emotion to classify with an accuracy of 0.42. Additional hand-cleaning of the data and more focused keywords may improve results. Some questions, such as "Does money buy happiness?", can be very tricky to catch.
 
 To use the scraper, you need a yaml file with your reddit credentials. It can be run as:
 
@@ -18,11 +18,9 @@ Title search terms can be changed by creating your own --emotion-dict for the sc
  Words not wanted in the title can be changed by creating your own --excluded-words list. Defaults are:<br />
 ["song","songs", "film", "films","movie", "movies", "joke", "jokes","lyrics", "book", "books","irrational,unreasonably"]
 
-Additional hand-cleaning of dataset may be needed as some questions, such as "Does money buy happiness?", can be tricky to catch.
-
 To test the classification:
 
 bash 
 python classify.py --filename data/2018.08.08_comments.json \
---char-features --tfidf --empath --vader --sliding-window --bigrams \
+--char-features --tfidf --empath \
 --classifier svc
