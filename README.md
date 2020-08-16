@@ -23,6 +23,6 @@ Additional hand-cleaning of dataset may be needed as some questions can be trick
 To test the classification:
 
 bash 
-python classify.py --filename data/2020.08.08_comments.json \
+python classify.py --filename data/2018.08.08_comments.json \
 --char-features --tfidf --empath --vader --sliding-window --bigrams \
 --classifier svc
