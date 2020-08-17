@@ -24,32 +24,13 @@ def main(args):
 
     subreddit = reddit.subreddit(args.subreddit)
 
-    today = date.today()
-
-    if not args.get_comments:
+    with open(os.path.join(args.save_path, "comments.json"), "w") as sink:
+        titles = []
+        ids = []
+        emotions = []
         for emotion, synonym_list in args.emotion_dict.items():
             # create dataframe to store comments
-            topics_data = pd.DataFrame(
-                {
-                    "title": [],
-                    "score": [],
-                    "id": [],
-                    "url": [],
-                    "comms_num": [],
-                    "created": [],
-                    "emotion": []
-                }
-            )
             for synonym in synonym_list:
-                topics_dict = {
-                    "title": [],
-                    "score": [],
-                    "id": [],
-                    "url": [],
-                    "comms_num": [],
-                    "created": [],
-                    "emotion": []
-                }
                 query = subreddit.search(synonym, limit=args.query_limit)
                 for emotional_submission in query:
                     if synonym in emotional_submission.title:
@@ -60,37 +41,29 @@ def main(args):
                         ):
                             pass
                         else:
-                            topics_dict["title"].append(emotional_submission.title)
-                            topics_dict["score"].append(emotional_submission.score)
-                            topics_dict["id"].append(emotional_submission.id)
-                            topics_dict["url"].append(emotional_submission.url)
-                            topics_dict["comms_num"].append(
-                                emotional_submission.num_comments
-                            )
-                            topics_dict["created"].append(emotional_submission.created)
-                            topics_dict["emotion"].append(emotion)
-                # combine all the dictionaries into one dataframe
-                topics_data = pd.concat([pd.DataFrame(topics_dict), topics_data])
-        if args.titles_only:
-            title_path = os.path.join(args.save_path,f'{today.strftime("%Y.%m.%d")}_titles.csv')
-            topics_data.to_csv(title_path,index=False)
-            quit()
-    else:
-        topics_data = pd.read_csv(args.get_comments)
-    
-    with open(os.path.join(args.save_path,f'{today.strftime("%Y.%m.%d")}_comments.json'), "w") as sink:
-        comment_dict = {}
-        for thread_id,emotion in zip(topics_data.id,topics_data.emotion):
-            submission = reddit.submission(id=thread_id)
-            for comment in submission.comments:
-                # ignore “load more comments”
-                if isinstance(comment, MoreComments):
-                    continue
-                # ignore “continue this thread” links and short comments
-                if len(comment.body.split()) > 3:
-                    comment_dict[comment.body] = emotion
-        logging.info("%d %s comments scraped.", len(comment_dict), emotion)
-        json.dump(comment_dict, sink)
+                            titles.append(emotional_submission.title)
+                            ids.append(emotional_submission.id)
+                            emotions.append(emotion)
+            
+            """comments = []
+            comment_titles = []
+            comment_emotions = []"""
+            final_dict = {'comments': [],
+            'comment_titles': [],
+            'comment_emotions': []}
+            for idx,t,e in zip(ids,titles,emotions):
+                submission = reddit.submission(id=idx)
+                for comment in submission.comments:
+                    # ignore “load more comments”
+                    if isinstance(comment, MoreComments):
+                        continue
+                    # ignore “continue this thread” links and short comments
+                    if len(comment.body.split()) > 3:
+                        final_dict['comments'].append(comment.body)
+                        final_dict['comment_titles'].append(t)
+                        final_dict['comment_emotions'].append(e)
+            print(f"{len(final_dict)} comments scraped." )
+            json.dump(final_dict, sink)
 
 
 if __name__ == "__main__":
@@ -99,8 +72,15 @@ if __name__ == "__main__":
     parser.add_argument(
         "--reddit-credentials", help="yaml file containing reddit credentials",
     )
-    parser.add_argument("--titles-only", default=False, action="store_true",help='if you would like to hand clean the titles')
-    parser.add_argument("--get-comments", default=None, type=str,help='csv hand cleaned titles')
+    parser.add_argument(
+        "--titles-only",
+        default=False,
+        action="store_true",
+        help="if you would like to hand clean the titles",
+    )
+    parser.add_argument(
+        "--get-comments", default=None, type=str, help="csv hand cleaned titles"
+    )
     parser.add_argument(
         "--query-limit",
         default=500,
@@ -125,7 +105,7 @@ if __name__ == "__main__":
             "book",
             "books",
             "irrational",
-            "unreasonably"
+            "unreasonably",
         ],
         type=list,
         help="list of words not wanted in the title of the submission",
