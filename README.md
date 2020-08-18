@@ -23,7 +23,7 @@ The default emotions and search terms are shown below:
 "afraid":["afraid", "more afraid", "most afraid", "frightened", "fear", "creepy"],<br />
 "disgusted": ["disgusted", "more disgusted", "most disgusted", "grossed out", "most grossed out", "most appalled", "appalled", "disgust"]}
 
-You can use your own search terms with the --emotion-dict flag. Each key in the dictionary is the primary emotion and other words are synonyms to search for. If you'd like to make changes, I suggest copying the default dictionary below, editing it, and pasting it after the --emotion-dict flag.<br />
+You can use your own search terms with the --emotion-dict flag. Each key in the dictionary is the primary emotion and other words are synonyms to search for.<br />
 
 Similarly you can exclude title terms using the --excluded-words flag. Defaults are:<br />
 ["song","songs", "film", "films","movie", "movies", "joke", "jokes","lyrics", "book", "books","irrational","unreasonably"]
