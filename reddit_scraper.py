@@ -13,6 +13,7 @@ logging.basicConfig(level="INFO", format="%(message)s")
 
 
 def main(args):
+    
     with open(args.reddit_credentials, "r") as source:
         credentials = yaml.safe_load(source)
 
@@ -23,6 +24,9 @@ def main(args):
     )
 
     subreddit = reddit.subreddit(args.subreddit)
+    
+    if not os.path.exists(args.save_path):
+        os.mkdir(args.save_path)
 
     with open(os.path.join(args.save_path, "comments.json"), "w") as sink:
         titles = []
@@ -45,9 +49,6 @@ def main(args):
                             ids.append(emotional_submission.id)
                             emotions.append(emotion)
             
-            """comments = []
-            comment_titles = []
-            comment_emotions = []"""
             final_dict = {'comments': [],
             'comment_titles': [],
             'comment_emotions': []}
@@ -62,7 +63,6 @@ def main(args):
                         final_dict['comments'].append(comment.body)
                         final_dict['comment_titles'].append(t)
                         final_dict['comment_emotions'].append(e)
-            print(f"{len(final_dict)} comments scraped." )
             json.dump(final_dict, sink)
 
 
