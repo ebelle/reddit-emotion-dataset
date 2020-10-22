@@ -12,7 +12,7 @@ from keras.utils import to_categorical
 def load_data(filename):
     with open(filename, "r") as source:
         data = json.load(source)
-        df = pd.DataFrame(list(data.items()), columns=["text", "emotions"])
+        df = pd.DataFrame.from_dict(data)
     return df
 
 

@@ -110,7 +110,7 @@ def main(args):
                 ),
             )
         )
-    if args.char_features:
+    if args.char:
         transformer_list.append(
             (
                 "char_features",
@@ -167,7 +167,7 @@ if __name__ == "__main__":
     parser.add_argument("--vader", default=False, action="store_true")
     parser.add_argument("--empath", default=False, action="store_true")
     parser.add_argument("--tfidf", default=False, action="store_true")
-    parser.add_argument("--char-features", default=False, action="store_true")
+    parser.add_argument("--char", default=False, action="store_true")
     parser.add_argument("--sliding-window", default=False, action="store_true")
     parser.add_argument(
         "--classifier",

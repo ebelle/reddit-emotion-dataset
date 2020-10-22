@@ -1,15 +1,12 @@
 import os
-import logging
 import pandas as pd
 import praw
 from praw.models import MoreComments
 import yaml
-import re
 import json
 from datetime import date
 import argparse
 
-logging.basicConfig(level="INFO", format="%(message)s")
 
 
 def main(args):
@@ -33,7 +30,7 @@ def main(args):
         ids = []
         emotions = []
         for emotion, synonym_list in args.emotion_dict.items():
-            # create dataframe to store comments
+            # search each synonym
             for synonym in synonym_list:
                 query = subreddit.search(synonym, limit=args.query_limit)
                 for emotional_submission in query:
@@ -48,11 +45,10 @@ def main(args):
                             titles.append(emotional_submission.title)
                             ids.append(emotional_submission.id)
                             emotions.append(emotion)
-            
-            final_dict = {'comments': [],
-            'comment_titles': [],
-            'comment_emotions': []}
-            for idx,t,e in zip(ids,titles,emotions):
+            comment_dict = {'text': [],
+            'titles': [],
+            'emotions': []}
+            for idx, title, emotion in zip(ids, titles, emotions):
                 submission = reddit.submission(id=idx)
                 for comment in submission.comments:
                     # ignore “load more comments”
@@ -60,10 +56,11 @@ def main(args):
                         continue
                     # ignore “continue this thread” links and short comments
                     if len(comment.body.split()) > 3:
-                        final_dict['comments'].append(comment.body)
-                        final_dict['comment_titles'].append(t)
-                        final_dict['comment_emotions'].append(e)
-            json.dump(final_dict, sink)
+                        comment_dict['text'].append(comment.body)
+                        comment_dict['titles'].append(title)
+                        comment_dict['emotions'].append(emotion)
+        
+        json.dump(comment_dict, sink)
 
 
 if __name__ == "__main__":
@@ -71,15 +68,6 @@ if __name__ == "__main__":
     parser.add_argument("--save-path", help="folder for saving scraped comments")
     parser.add_argument(
         "--reddit-credentials", help="yaml file containing reddit credentials",
-    )
-    parser.add_argument(
-        "--titles-only",
-        default=False,
-        action="store_true",
-        help="if you would like to hand clean the titles",
-    )
-    parser.add_argument(
-        "--get-comments", default=None, type=str, help="csv hand cleaned titles"
     )
     parser.add_argument(
         "--query-limit",
@@ -139,7 +127,8 @@ if __name__ == "__main__":
                 "sadder",
                 "saddest",
                 "depressed",
-                "more depressed" "most depressed",
+                "more depressed",
+                "most depressed",
                 "sadness",
                 "depression",
             ],
